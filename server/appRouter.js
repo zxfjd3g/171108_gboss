@@ -11,6 +11,7 @@ const express = require('express')
 const md5 = require('blueimp-md5')  // 密文 = md5(明文)
 const models = require('./models')
 const UserModel = models.getModel('user')
+const filter = {pwd: 0} //过滤的条件
 
 // 2. 得到路由器
 const router = express.Router()
@@ -44,6 +45,23 @@ router.post('/register', function (req, res) { // 处理请求, 返回响应
   })
 })
 // 登陆路由
+router.post('/login', function (req, res) {
+  // 1. 获取请求参数数据(name, pwd)
+  const {name, pwd} = req.body
+  // 2. 处理数据: 根据name和pwd去数据库查询得到user
+  UserModel.findOne({name, pwd: md5(pwd)}, filter, function (err, user) {
+    // 3. 返回响应数据
+    // 3.1. 如果user没有值, 返回一个错误的提示: 用户名或密码错误
+    if(!user) {
+      res.send({code: 1, msg: '用户名或密码错误'})
+    } else {
+      // 生成一个cookie(userid: user._id), 并交给浏览器保存
+      res.cookie('userid', user._id)
+      // 3.2. 如果user有值, 返回user
+      res.send({code: 0, data: user}) // user中没有pwd
+    }
+  })
+})
 
 
 // 4. 向外暴露路由器
