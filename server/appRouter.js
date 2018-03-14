@@ -38,6 +38,7 @@ router.post('/register', function (req, res) { // 处理请求, 返回响应
       new UserModel({name, pwd: md5(pwd), type}).save(function (err, user) {
         // 生成一个cookie(userid: user._id), 并交给浏览器保存
         res.cookie('userid', user._id)
+        console.log('------')
         // 3.2. 保存成功, 返回成功的响应数据: user
         res.send({code: 0, data: {_id: user._id, name, type}})  // 返回的数据中不要携带pwd
       })

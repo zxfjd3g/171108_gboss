@@ -8,19 +8,27 @@ import {AUTH_SUCCESS, ERROR_MSG} from './action-types'
 const initUser = {
   name: '', // 用户名
   type: '', //用户类型
+  msg: '', //错误提示信息
+  redirectTo: '' // 需要自动转向的路径
 }
 
 // 管理user的reducer
 function user(state = initUser, action) {
   switch (action.type) {
-    case AUTH_SUCCESS:
-      return
-    case ERROR_MSG:
-      return
+    case AUTH_SUCCESS:  // 成功  user
+      return {...action.data, redirectTo:'/'}
+    case ERROR_MSG: //失败 msg
+      return {...state, msg: action.data}   // ...的功能解包/打包
     default:
       return state
   }
 }
+
+/*function test (...args) { // 打包
+
+}
+
+test(1, 2, 3)*/
 
 
 // 向外暴露的是合并后的reducer函数

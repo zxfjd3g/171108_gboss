@@ -4,6 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {NavBar, WingBlank, List, InputItem, WhiteSpace, Radio, Button} from 'antd-mobile'
+import {Redirect} from 'react-router-dom'
 
 import Logo from '../../components/logo/logo'
 import {register} from '../../redux/actions'
@@ -48,6 +49,13 @@ class Register extends React.Component {
   }
 
   render () {
+    // 取出props中的user
+    const {user} = this.props
+
+    // 如果user的redirectTo有值, 需要自动转向指定的路径
+    if(user.redirectTo) {
+      return <Redirect to={user.redirectTo}/>
+    }
 
     return (
       <div>
@@ -56,6 +64,7 @@ class Register extends React.Component {
 
         <WingBlank>
           <List>
+            {user.msg ? <p className='error-msg'>{user.msg}</p> : ''}{/*如果user中的msg有值, 就显示*/}
             <InputItem onChange={(val) => {this.handleChange('name', val)}}>用户名:</InputItem>
             <WhiteSpace/>
             <InputItem type="password" onChange={(val) => {this.handleChange('pwd', val)}}>密码:</InputItem>

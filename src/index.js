@@ -11,6 +11,8 @@ import Register from './containers/register/register'
 import Dashboard from './containers/dashboard/dashboard'
 import store from './redux/store'
 
+import './assets/css/index.less'
+
 
 //渲染标签到页面
 ReactDOM.render((
