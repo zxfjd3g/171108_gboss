@@ -28,6 +28,6 @@ app.use('/api', appRouter)  // 请求注册: /api/register
 
 
 // 4. 启动服务器(使用app监听指定端口)
-app.listen('3000', function () { // 启动完成调用
-  console.log('server start on port: 3000')
+app.listen('4000', function () { // 启动完成调用
+  console.log('server start on port: 4000')
 })

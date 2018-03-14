@@ -2,13 +2,15 @@
 注册路由组件
  */
 import React from 'react'
+import {connect} from 'react-redux'
 import {NavBar, WingBlank, List, InputItem, WhiteSpace, Radio, Button} from 'antd-mobile'
 
 import Logo from '../../components/logo/logo'
+import {register} from '../../redux/actions'
 
 const RadioItem = Radio.RadioItem
 
-export default class Register extends React.Component {
+class Register extends React.Component {
 
   /*constructor(props) {
     super(props)
@@ -41,7 +43,8 @@ export default class Register extends React.Component {
   
   // 处理注册
   handleRegister = () => {
-    console.log(this.state)
+    // 触发redux中register action调用
+    this.props.register(this.state)
   }
 
   render () {
@@ -71,3 +74,15 @@ export default class Register extends React.Component {
     )
   }
 }
+
+export default connect(
+  state => ({user: state.user}),  // 组件的props多了一个属性: user
+  {register} // 组件的props多了一个属性: register函数
+)(Register)
+
+/*
+export default connect(
+  state => ({}),
+  {}
+)(组件)
+ */
