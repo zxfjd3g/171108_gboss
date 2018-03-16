@@ -22,8 +22,8 @@ export const register = ({name, pwd, pwd2, type}) => {
   }
 
   //如果成功了, 发异步的ajax请求
-  return  dispatch => { // 返回一个函数是异步action
-    reqRegister({name, pwd, type}).then(response => {
+  return  async dispatch => { // 返回一个函数是异步action
+    /*reqRegister({name, pwd, type}).then(response => {
       const result = response.data  // {code: 0, data: user}  {code:1, msg: 'xxx'}
       // 如果成功了, 分发一个成功的action
       if(result.code===0) {
@@ -31,7 +31,16 @@ export const register = ({name, pwd, pwd2, type}) => {
       } else {// 如果失败了, 分发一个错误信息的action
         dispatch(errorMsg(result.msg))
       }
-    })
+    })*/
+    // 使用await: 通过调用返回promise的函数获取异步的结果, 函数调用的左侧
+    const response = await reqRegister({name, pwd, type})
+    const result = response.data  // {code: 0, data: user}  {code:1, msg: 'xxx'}
+    // 如果成功了, 分发一个成功的action
+    if(result.code===0) {
+      dispatch(authsuccess(result.data))
+    } else {// 如果失败了, 分发一个错误信息的action
+      dispatch(errorMsg(result.msg))
+    }
   }
 }
 
@@ -42,18 +51,16 @@ export const login = ({name, pwd}) => {
     return errorMsg('用户名和密码必须输入')
   }
 
-  return dispatch => {
-    // 如果通过, 发异步ajax请求登陆
-    reqLogin({name, pwd}).then(response => {
-      const result = response.data
-      // 如果成功了, 分发一个成功的action
-      if(result.code===0) {
-        dispatch(authsuccess(result.data))
-      } else {
-        // 如果失败了, 分发一个错误信息的action
-        dispatch(errorMsg(result.msg))
-      }
-    })
+  return async dispatch => {
+    const response = await reqLogin({name, pwd})
+    const result = response.data
+    // 如果成功了, 分发一个成功的action
+    if(result.code===0) {
+      dispatch(authsuccess(result.data))
+    } else {
+      // 如果失败了, 分发一个错误信息的action
+      dispatch(errorMsg(result.msg))
+    }
   }
 
 }

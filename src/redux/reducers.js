@@ -33,5 +33,6 @@ test(1, 2, 3)*/
 
 // 向外暴露的是合并后的reducer函数
 export default combineReducers({ // 返回的依然是一个reducer函数
-  user
-})
+  user,
+  // xxx
+})  // state的结构: {user, xxx}
