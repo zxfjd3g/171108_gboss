@@ -9,4 +9,7 @@ export const reqRegister = (user) => ajax('/api/register', user, 'POST')
 // 请求登陆
 export const reqLogin = (user) => ajax('/api/login', user, 'POST')
 
+// 请求更新用户
+export const reqUpdateUser = (user) => ajax('/api/update', user, 'POST')
+
 // 向下移动 alt + 向下
