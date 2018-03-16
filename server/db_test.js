@@ -14,11 +14,12 @@
   3.3. 通过Model的findByIdAndUpdate()更新某个数据
   3.4. 通过Model的remove()删除匹配的数据
  */
+const md5 = require('blueimp-md5')
 // 1. 连接数据库
 // 1.1. 引入mongoose
 const mongoose = require('mongoose')
 // 1.2. 连接指定数据库(URL只有数据库是变化的)
-mongoose.connect('mongodb://localhost:27017/gboss_test')
+mongoose.connect('mongodb://localhost:27017/gboss')
 // 1.3. 获取连接对象
 const conn = mongoose.connection
 // 1.4. 绑定连接完成的监听(用来提示连接成功)
@@ -56,8 +57,8 @@ const UserModel = mongoose.model('user', userSchema) // 集合名: users
 function testSave() {
   // user数据对象
   const user = {
-    name: 'Jack22',
-    pwd: '1234',
+    name: 'xfzhang2',
+    pwd: md5('1234'),
     type: 'genius',
     avatar: 'boy'
   }
@@ -68,7 +69,7 @@ function testSave() {
   })
 }
 
-// testSave()
+testSave()
 
 
 // 3.2. 通过Model的find()/findOne()查询多个或一个数据
@@ -100,5 +101,5 @@ function testDelete() {
     console.log('remove()', err, result)
   })
 }
-testDelete()
+// testDelete()
 
