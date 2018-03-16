@@ -2,14 +2,28 @@
 包含n个同步/异步action creator函数
  */
 
-import {reqRegister, reqLogin} from '../api'
-import {ERROR_MSG, AUTH_SUCCESS} from "./action-types";
+import {
+  reqRegister,
+  reqLogin,
+  reqUpdateUser
+} from '../api'
+import {
+  ERROR_MSG,
+  AUTH_SUCCESS,
+  RECEIVE_USER,
+  RESET_USER
+} from "./action-types";
 
 // 错误信息的同步action
 const errorMsg = (msg) => ({type: ERROR_MSG, data: msg})
 
 // 请求成功的同步action
 const authsuccess = (user) => ({type: AUTH_SUCCESS, data: user})
+
+// 接收用户的同步action
+const receiveUser = (user) => ({type: RECEIVE_USER, data: user})
+// 重置用户的同步action
+const resetUser = (msg) => ({type: RESET_USER, data: msg})
 
 
 // 异步注册action
@@ -62,5 +76,22 @@ export const login = ({name, pwd}) => {
       dispatch(errorMsg(result.msg))
     }
   }
+}
 
+/*
+异步更新用户的action
+ */
+export const updateUser = (user) => {
+  debugger
+  return async dispatch => {
+    const response = await reqUpdateUser(user)
+    const result = response.data
+    // 如果成功了, 分发一个接收用户的action
+    if(result.code===0) {
+      dispatch(receiveUser(result.data))
+    } else {
+      // 如果失败了, 分发一个重置用户的action
+      dispatch(resetUser(result.msg))
+    }
+  }
 }

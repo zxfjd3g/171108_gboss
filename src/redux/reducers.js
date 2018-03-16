@@ -3,7 +3,12 @@
  */
 import {combineReducers} from 'redux'
 
-import {AUTH_SUCCESS, ERROR_MSG} from './action-types'
+import {
+  ERROR_MSG,
+  AUTH_SUCCESS,
+  RECEIVE_USER,
+  RESET_USER
+} from "./action-types";
 import {getRedirectPath} from '../utils'
 
 const initUser = {
@@ -21,6 +26,10 @@ function user(state = initUser, action) {
       return {...user, redirectTo:getRedirectPath(user.type, user.avatar)}
     case ERROR_MSG: //失败 msg
       return {...state, msg: action.data}   // ...的功能解包/打包
+    case RECEIVE_USER:
+      return action.data
+    case RESET_USER:
+      return {...initUser, msg: action.data}
     default:
       return state
   }
