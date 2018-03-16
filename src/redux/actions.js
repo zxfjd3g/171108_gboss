@@ -5,7 +5,8 @@
 import {
   reqRegister,
   reqLogin,
-  reqUpdateUser
+  reqUpdateUser,
+  reqUser
 } from '../api'
 import {
   ERROR_MSG,
@@ -91,6 +92,21 @@ export const updateUser = (user) => {
       dispatch(receiveUser(result.data))
     } else {
       // 如果失败了, 分发一个重置用户的action
+      dispatch(resetUser(result.msg))
+    }
+  }
+}
+
+/*
+异步获取用户的action
+ */
+export const getUser = () => {
+  return async dispatch => {
+    const response = await reqUser()
+    const result = response.data
+    if(result.code===0) {
+      dispatch(receiveUser(result.data))
+    } else {
       dispatch(resetUser(result.msg))
     }
   }

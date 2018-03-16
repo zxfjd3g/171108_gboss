@@ -92,6 +92,26 @@ router.post('/update', function (req, res) {
 
 })
 
+// 根据cookie获取对应的user
+router.get('/user', function (req, res) {
+  // 取出cookie中的userid
+  const userid = req.cookies.userid
+  if(!userid) {
+    return res.send({code: 1, msg: '请先登陆'})
+  }
+
+  // 查询对应的user
+  UserModel.findOne({_id: userid}, filter, function (err, user) {
+    if(!user) {
+      // 清除浏览器保存userid的cookie
+      res.clearCookie('userid')
+      return res.send({code: 1, msg: '请先登陆'})
+    } else {
+      return res.send({code: 0, data: user})
+    }
+  })
+})
+
 
 
 // 4. 向外暴露路由器

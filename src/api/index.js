@@ -12,4 +12,7 @@ export const reqLogin = (user) => ajax('/api/login', user, 'POST')
 // 请求更新用户
 export const reqUpdateUser = (user) => ajax('/api/update', user, 'POST')
 
+// 获取用户
+export const reqUser = () => ajax('/api/user')
+
 // 向下移动 alt + 向下
