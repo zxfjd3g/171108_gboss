@@ -15,4 +15,7 @@ export const reqUpdateUser = (user) => ajax('/api/update', user, 'POST')
 // 获取用户
 export const reqUser = () => ajax('/api/user')
 
+// 根据type获取用户列表
+export const reqUserList = (type) => ajax('/api/userlist', {type})
+
 // 向下移动 alt + 向下

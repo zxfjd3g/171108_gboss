@@ -1,8 +1,23 @@
 import React, {Component} from 'react'
-export default class Boss extends Component {
-  render () {
+import {connect} from 'react-redux'
+
+import {getUserList} from '../../redux/actions'
+import UserList from '../../components/user-list/user-list'
+
+class Boss extends Component {
+
+  componentDidMount () {
+    // 异步获取牛人的userlist
+    this.props.getUserList('genius')
+  }
+  render() {
     return (
-      <div>牛人列表</div>
+      <UserList userList={this.props.userList}/>
     )
   }
 }
+
+export default connect(
+  state => ({userList: state.userList}),
+  {getUserList}
+)(Boss)

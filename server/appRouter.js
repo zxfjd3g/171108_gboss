@@ -113,6 +113,15 @@ router.get('/user', function (req, res) {
 })
 
 
+// 根据type获取用户列表
+router.get('/userlist', function (req, res) {
+  const type = req.query.type
+
+  UserModel.find({type}, filter, function (err, users) {
+    res.send({code: 0, data: users})
+  })
+
+})
 
 // 4. 向外暴露路由器
 module.exports = router
