@@ -20,7 +20,7 @@ import {
   RECEIVE_USER_LIST,
   RECEIVE_MSG,
   RECEIVE_MSG_LIST
-} from "./action-types";
+} from "./action-types"
 
 // 错误信息的同步action
 const errorMsg = (msg) => ({type: ERROR_MSG, data: msg})

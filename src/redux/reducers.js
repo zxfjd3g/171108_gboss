@@ -52,7 +52,7 @@ function userList(state=initUserList, action) {
 
 const initChat = {
   chatMsgs: [], // 包含所有当前用户相关的聊天列表
-  users: {}, // 包含所有用户信息{name, avatar}的对象容器
+  users: {}, // 包含所有用户信息{name, avatar}的对象容器(不需要遍历查找)
   unReadCount: 0 // 未读消息的数量
 }
 

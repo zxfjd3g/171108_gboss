@@ -62,6 +62,8 @@ io.on('connection', function(socket) {// socket代表客户端与服务器连接
   })
 })
 
+// 自定义消息/事件
+
 
 // 3. 注册根路由(使用app的use())
 /*app.use('/', function (req, res) {
@@ -76,9 +78,11 @@ app.use('/api', appRouter)  // 请求注册: /api/register
 
 
 // 4. 启动服务器(使用app监听指定端口)
-/*app.listen('4000', function () { // 启动完成调用
+/*
+app.listen('4000', function () { // 启动完成调用
   console.log('server start on port: 4000')
-})*/
+})
+*/
 
 // 启动服务器监听
 server.listen(4000, () => {

@@ -4,7 +4,7 @@
  */
 
 import React, {Component} from 'react'
-import {NavBar, List, InputItem} from 'antd-mobile'
+import {NavBar, List, InputItem, Icon, Grid} from 'antd-mobile'
 import {connect} from 'react-redux'
 import {sendMsg} from '../../redux/actions'
 
@@ -13,7 +13,19 @@ const Item = List.Item
 class Chat extends Component {
 
   state = {
-    content: ''
+    content: '',
+    isShow: false //表情列表是否显示
+  }
+
+  componentWillMount () { // 在第一次调用render()之前调用
+    const emojis = ['😀', '😄', '😅', '😉','😀', '😄', '😅', '😉',
+      '😀', '😄', '😅', '😉','😀', '😄', '😅', '😉',
+      '😀', '😄', '😅', '😉','😀', '😄', '😅', '😉',
+      '😀', '😄', '😅', '😉','😀', '😄', '😅', '😉',
+      '😀', '😄', '😅', '😉','😀', '😄', '😅', '😉',
+      '😀', '😄', '😅', '😉','😀', '😄', '😅', '😉',
+      '😀', '😄', '😅', '😉','😀', '😄', '😅', '😉']
+    this.emojis = emojis.map(text => ({text}))
   }
 
   handleChange = (content) => {
@@ -28,10 +40,33 @@ class Chat extends Component {
       const to = this.props.match.params.userid
       // 发送消息
       this.props.sendMsg({from, to, content})
-      // 清除输入数据
-      this.setState({content: ''})
+      // 清除输入数据并隐藏表情
+      this.setState({content: '', isShow: false})
     }
   }
+
+  toggleShow = () => {
+    const isShow = !this.state.isShow
+    this.setState({isShow})
+
+    if(isShow) {
+      // 异步手动派发resize事件,解决表情列表显示的bug
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'))
+      }, 0)
+    }
+  }
+
+  componentDidMount() {
+    // 初始显示列表
+    window.scrollTo(0, document.body.scrollHeight)
+  }
+
+  componentDidUpdate () {
+    // 更新显示列表
+    window.scrollTo(0, document.body.scrollHeight)
+  }
+
 /*
 两种请求参数?
 1. param参数
@@ -62,8 +97,11 @@ class Chat extends Component {
 
     return (
       <div id='chat-page'>
-        <NavBar>{users[targetId].name}</NavBar>
-        <List>
+        <NavBar className='stick-top' icon={<Icon type='left'/>}
+                onLeftClick={() => this.props.history.goBack()}>
+          {users[targetId].name}
+        </NavBar>
+        <List style={{marginTop:50, marginBottom: 50}}>
           {
             msgs.map(msg => {
               if(msg.to===meId) { // 发给我的
@@ -95,11 +133,22 @@ class Chat extends Component {
           <InputItem
             placeholder="请输入"
             extra={
-              <span onClick={this.send}>发送</span>
+              <div>
+                <span onClick={this.toggleShow}>😊</span>
+                <span onClick={this.send}>发送</span>
+              </div>
             }
             value={this.state.content}
             onChange={val => {this.handleChange(val)}}
+            onFocus={() => this.setState({isShow: false})}
           />
+          {this.state.isShow ? (
+            <Grid data={this.emojis}
+                  columnNum={8}
+                  carouselMaxRow={4}
+                  isCarousel={true}
+                  onClick={item => this.setState({content: this.state.content + item.text})}/>
+          ) : null}
         </div>
       </div>
     )
