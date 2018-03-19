@@ -9,7 +9,8 @@ import {
   RECEIVE_USER,
   RESET_USER,
   RECEIVE_USER_LIST,
-  RECEIVE_MSG
+  RECEIVE_MSG,
+  RECEIVE_MSG_LIST
 } from "./action-types";
 import {getRedirectPath} from '../utils'
 
@@ -63,7 +64,13 @@ function chat(state=initChat, action) {
       return {
         chatMsgs: [...state.chatMsgs, chatMsg],
         users: state.users,
-        unReadCount: state.users + 1
+        unReadCount: 0
+      }
+    case RECEIVE_MSG_LIST:
+      return {
+        chatMsgs: action.data.chatMsgs,
+        users: action.data.users,
+        unReadCount: 0
       }
     default:
       return state
@@ -74,5 +81,6 @@ function chat(state=initChat, action) {
 // 向外暴露的是合并后的reducer函数
 export default combineReducers({ // 返回的依然是一个reducer函数
   user,
-  userList
+  userList,
+  chat
 })  // state的结构: {user, userList}

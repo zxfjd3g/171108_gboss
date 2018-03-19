@@ -47,7 +47,7 @@ io.on('connection', function(socket) {// socket代表客户端与服务器连接
 
   // 绑定sendMsg监听, 接收客户端发送的消息
   socket.on('sendMsg', function({from, to, content}) {
-    console.log('服务器接收到浏览器的消息', data)
+    console.log('服务器接收到浏览器的消息', {from, to, content})
 
     // 保存到数据库
     const chat_id = [from, to].sort().join('_')  // from_to或者to_from
@@ -58,13 +58,7 @@ io.on('connection', function(socket) {// socket代表客户端与服务器连接
       sockects[from] && sockects[from].emit('receiveMsg', chatMsg)
       sockects[to] && sockects[to].emit('receiveMsg', chatMsg)
       console.log('服务器向2个客户端发送消息', from, to, chatMsg)
-
     })
-
-
-
-
-    console.log('服务器向浏览器发送消息', data.name+'_'+data.date)
   })
 })
 
