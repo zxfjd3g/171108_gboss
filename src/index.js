@@ -13,6 +13,8 @@ import store from './redux/store'
 
 import './assets/css/index.less'
 
+import './test/ioTest'
+
 
 //渲染标签到页面
 ReactDOM.render((
@@ -29,3 +31,4 @@ ReactDOM.render((
 
 // 复制一行: ctrl + 向下
 // 大小写切换: ctrl + shift + X
+

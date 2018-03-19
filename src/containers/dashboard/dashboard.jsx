@@ -13,6 +13,7 @@ import Genius from '../genius/genius'
 import Boss from '../boss/boss'
 import Msg from '../msg/msg'
 import User from '../user/user'
+import Chat from '../chat/chat'
 import NotFound from '../../components/not-found/not-found'
 import NavFooter from '../../components/nav-footer/nav-footer'
 
@@ -97,7 +98,7 @@ class Dashboard extends React.Component {
 
     return (
       <div>
-        {currentNav? <NavBar>{currentNav.title}</NavBar> : null}
+        {currentNav? <NavBar className='stick-top'>{currentNav.title}</NavBar> : null}
         <Switch>
           <Route path='/bossinfo' component={BossInfo}></Route>
           <Route path='/geniusinfo' component={GeniusInfo}></Route>
@@ -106,6 +107,7 @@ class Dashboard extends React.Component {
           <Route path='/boss' component={Boss}></Route>
           <Route path='/msg' component={Msg}></Route>
           <Route path='/user' component={User}></Route>
+          <Route path='/chat/:userid' component={Chat}></Route>
           <Route component={NotFound}></Route>
         </Switch>
 
