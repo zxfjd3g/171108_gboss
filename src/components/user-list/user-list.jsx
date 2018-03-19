@@ -29,9 +29,9 @@ class UserList extends React.Component {
                   extra={<span>{user.title}</span>}
                 />
                 <Body>
-                {user.company ? <div>公司: ${user.company}</div> : null}
-                <div>描述: ${user.desc}</div>
-                {user.money ? <div>薪资: ${user.money}</div> : null}
+                {user.company ? <div>公司: {user.company}</div> : null}
+                <div>描述: {user.desc}</div>
+                {user.money ? <div>薪资: {user.money}</div> : null}
                 </Body>
               </Card>
             </div>

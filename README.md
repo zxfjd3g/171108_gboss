@@ -108,5 +108,45 @@
       同步编码方式实现程序的异步执行
       依赖于promise/简化promise编码
 ## 2. 实现user信息完善功能
+    1). 后台
+      更新user信息的后台路由
+    2). 前台
+      api: 
+          reqUpdateUser(user): 请求更新用户的接口
+      redux
+          action-types.js
+          actions.js
+          reducers.js
+      组件
+          boss-info.jsx
+          genius-info.jsx
+## 3. 搭建整体界面路由
+    1). 相关路由组件的定义和注册
+       boss.jsx
+       genius.jsx
+       msg.jsx
+       user.jsx
+       not-found.jsx
+    2). 统一在dashboard.jsx中检查用户是否登陆
 
-## 3. 搭建整体界面
+# day04
+## 1. 搭建整体界面
+    1). 抽取底部组件: nav-footer.jsx
+    2). 在非路由组件中使用router相关API: withRoute()
+    3). 选择使用{}还[]作为多个数据的容器
+
+## 2. user组件
+    1). 读取redux中的user显示相关信息
+    2). 解决点击事件不响应问题
+
+## 3. 用户列表组件
+    1). 抽取组件: user-list.jsx
+    2). 从后台异步获取指定类型的用户列表
+    
+
+# day05
+## 1. 聊天的后台
+
+## 2. 聊天的前台
+
+
