@@ -35,7 +35,7 @@ class User extends React.Component {
     const {name, avatar, type, title, desc, money, company} = this.props.user
 
     return (
-      <div>
+      <div style={{marginTop: 50}}>
         <Result
           img={<img src={require(`../../assets/imgs/${avatar}.png`)} style={{width: 50}} alt="avatar"/>}
           title={name}
