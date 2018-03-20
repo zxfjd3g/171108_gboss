@@ -10,6 +10,7 @@
 const express = require('express')
 const bodyParser = require('body-parser') // 解析请求体
 const cookieParser = require('cookie-parser') // 解析cookie
+const cors = require('cors')
 const appRouter = require('./appRouter')
 const ChatModel = require('./models').getModel('chat')
 
@@ -70,6 +71,7 @@ io.on('connection', function(socket) {// socket代表客户端与服务器连接
   res.send('hello gboss server8888')
 })*/
 
+app.use(cors()) // 向响应中添加一个响应头告诉浏览器允许跨域
 app.use(cookieParser()) // 解析cookie数据
 app.use(bodyParser.json()) // 解析请求体(ajax请求: json数据格式)
 app.use(bodyParser.urlencoded({ extended: false })) // 解析请求体(表单数据)

@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import {HashRouter, Route, Switch} from 'react-router-dom'
 import {Provider} from 'react-redux'
 
 import Login from './containers/login/login'
@@ -19,13 +19,13 @@ import './test/ioTest'
 //渲染标签到页面
 ReactDOM.render((
   <Provider store={store}>
-    <BrowserRouter>
+    <HashRouter>
       <Switch>
         <Route path='/login' component={Login}/>
         <Route path='/register' component={Register}/>
         <Route component={Dashboard}/> {/*默认路由组件*/}
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   </Provider>
 ), document.getElementById('root'))
 

@@ -2,7 +2,8 @@
 使用axios封装的ajax请求函数
  */
 import axios from 'axios'
-
+// const BASE_URL = 'http://localhost:4000'  // 生产环境打包
+const BASE_URL = '' // 开发环境运行
 /**
  * 发送ajax请求的函数
  * @param url 地址
@@ -11,6 +12,7 @@ import axios from 'axios'
  * @returns promise对象
  */
 export default function ajax(url = '', data = {}, type = 'GET') {
+  url = BASE_URL + url
   if (type === 'GET') {
     // 准备url query参数数据
     let dataStr = '' //数据拼接字符串
