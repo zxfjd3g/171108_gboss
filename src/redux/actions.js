@@ -19,7 +19,8 @@ import {
   RESET_USER,
   RECEIVE_USER_LIST,
   RECEIVE_MSG,
-  RECEIVE_MSG_LIST
+  RECEIVE_MSG_LIST,
+  MSG_READ
 } from "./action-types"
 
 // 错误信息的同步action
@@ -37,10 +38,13 @@ export const resetUser = (msg) => ({type: RESET_USER, data: msg})
 const receiveUserList = (userList) => ({type: RECEIVE_USER_LIST, data: userList})
 
 // 接收一个聊天消息的同步action
-const receiveMsg = (chatMsg) => ({type: RECEIVE_MSG, data: chatMsg})
+const receiveMsg = (chatMsg, userid) => ({type: RECEIVE_MSG, data: {chatMsg, userid}})
 
 // 接收消息列表的同步action
-const receiveMsgList = ({users, chatMsgs}) => ({type: RECEIVE_MSG_LIST, data: {users, chatMsgs}})
+const receiveMsgList = ({users, chatMsgs, userid}) => ({type: RECEIVE_MSG_LIST, data: {users, chatMsgs, userid}})
+
+// 读取了消息的同步action
+const msgRead = ({count, from, to}) => ({type: MSG_READ, data: {count, from, to}})
 
 /*
 初始化与服务器的io连接
@@ -52,19 +56,19 @@ function initIO(userid, dispatch) {
   // 绑定接收服务发送消息的监听
   io.socket.on('receiveMsg', function (chatMsg) {
     console.log('浏览器接收到消息', chatMsg)
-    dispatch(receiveMsg(chatMsg))
+    dispatch(receiveMsg(chatMsg, userid))
   })
 }
 
 /*
 异步获取当前用户相关的所有聊天列表
  */
-async function getMsgList(dispatch) {
+async function getMsgList(dispatch, userid) {
   const response = await reqMsgList()
   const result = response.data
   if(result.code===0) {
     const {users, chatMsgs} = result.data
-    dispatch(receiveMsgList({users, chatMsgs}))
+    dispatch(receiveMsgList({users, chatMsgs, userid}))
   }
 }
 
@@ -100,7 +104,7 @@ export const register = ({name, pwd, pwd2, type}) => {
     // 如果成功了, 分发一个成功的action
     if (result.code === 0) {
       initIO(result.data._id, dispatch)
-      getMsgList(dispatch)
+      getMsgList(dispatch, result.data._id)
       dispatch(authsuccess(result.data))
     } else {// 如果失败了, 分发一个错误信息的action
       dispatch(errorMsg(result.msg))
@@ -122,7 +126,7 @@ export const login = ({name, pwd}) => {
     // 如果成功了, 分发一个成功的action
     if (result.code === 0) {
       initIO(result.data._id, dispatch)
-      getMsgList(dispatch)
+      getMsgList(dispatch, result.data._id)
       dispatch(authsuccess(result.data))
     } else {
       // 如果失败了, 分发一个错误信息的action
@@ -158,7 +162,7 @@ export const getUser = () => {
     const result = response.data
     if (result.code === 0) {
       initIO(result.data._id, dispatch)
-      getMsgList(dispatch)
+      getMsgList(dispatch, result.data._id)
       dispatch(receiveUser(result.data))
     } else {
       dispatch(resetUser(result.msg))
@@ -175,6 +179,21 @@ export const getUserList = (type) => {
     const result = response.data
     if (result.code === 0) {
       dispatch(receiveUserList(result.data))
+    }
+  }
+}
+
+/*
+异步读取了聊天的action
+ */
+export const readMsg = (from) => {
+  return async (dispatch, getState) => {
+    const response = await reqReadMsg(from)
+    const result = response.data
+    if(result.code===0) {
+      const count = result.data
+      const to = getState().user._id
+      dispatch(msgRead({count, from, to}))
     }
   }
 }

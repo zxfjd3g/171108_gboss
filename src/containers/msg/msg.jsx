@@ -14,13 +14,16 @@ const Brief = Item.Brief
 2. 得到所有lastMsg组成的数组
 3. 对数组进行排序(按create_time降序)
  */
-function getLastMsgs (chatMsgs, userid) {
+/*function getLastMsgs (chatMsgs, userid) {
   // 创建存储lastMag的对象容器
   const lastMsgObjs = {}
   // 遍历chatMsgs
   chatMsgs.forEach(msg => {
 
     msg.unReadCount = 0  // 初始未读数量为0
+
+
+
 
     // 取出msg对应的保存的lastMsg
     const savedLastMsg = lastMsgObjs[msg.chat_id]
@@ -42,6 +45,53 @@ function getLastMsgs (chatMsgs, userid) {
       if(!msg.read && msg.to===userid) { // 如果当前消息是别人发的未读消息
         lastMsgObjs[msg.chat_id].unReadCount++ // 未读数量再加1
       }
+    }
+  })
+
+  /!*
+  {a: {unReadCount: 2, create_time:134}}
+  {chat_id: a: unReadCount: 0, create_time:111}
+   *!/
+
+  // 得到所有lastMsg组成的数组
+  const lastMsgs = Object.values(lastMsgObjs)
+
+  // 对数组进行排序(按create_time降序)
+  lastMsgs.sort(function (msg1, msg2) { // 如果返回负数, msg1在前面, 如果是正数, msg2在前面, 否则不变位置
+    return msg2.create_time-msg1.create_time
+  })
+
+  // 返回
+  return lastMsgs
+}*/
+
+function getLastMsgs (chatMsgs, userid) {
+  // 创建存储lastMag的对象容器
+  const lastMsgObjs = {}
+  // 遍历chatMsgs
+  chatMsgs.forEach(msg => {
+
+    msg.unReadCount = 0
+    // 统计msg
+    if(!msg.read && msg.to===userid) {
+      msg.unReadCount = 1
+    }
+
+    // 取出msg对应的保存的lastMsg
+    const savedLastMsg = lastMsgObjs[msg.chat_id]
+    // 如果不存在
+    if(!savedLastMsg) {
+      // 将msg保存为lastMsg
+      lastMsgObjs[msg.chat_id] = msg
+    } else {
+      // 比较, 如果msg的create_time更大, 就替换
+      if(msg.create_time>savedLastMsg.create_time) {
+        lastMsgObjs[msg.chat_id] = msg
+        msg.unReadCount += savedLastMsg.unReadCount
+      } else {
+        savedLastMsg.unReadCount += msg.unReadCount
+      }
+      // lastMsgObjs[msg.chat_id].unReadCount += msg.unReadCount
     }
   })
 
@@ -87,6 +137,7 @@ class Msg extends Component {
                 extra={<Badge text={lastMsg.unReadCount}/>}
                 thumb={targetAvatarIcon}
                 arrow='horizontal'
+                onClick={() => this.props.history.push(`/chat/${targetId}`)}
               >
                 {lastMsg.content}
                 <Brief>{targetUser.name}</Brief>

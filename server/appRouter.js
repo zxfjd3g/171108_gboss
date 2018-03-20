@@ -166,7 +166,7 @@ router.post('/readmsg', function (req, res) {
    */
   ChatModel.update({from, to, read: false}, {read: true}, {multi: true}, function (err, doc) {
     console.log('/readmsg', doc)
-    res.send({code: 0, data: doc.nModified})
+    res.send({code: 0, data: doc.nModified}) // 更新的数量
   })
 })
 

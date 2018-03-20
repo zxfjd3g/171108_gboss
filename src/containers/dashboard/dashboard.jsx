@@ -111,13 +111,13 @@ class Dashboard extends React.Component {
           <Route component={NotFound}></Route>
         </Switch>
 
-        {currentNav?  <NavFooter navList={this.navList}/>: null}
+        {currentNav?  <NavFooter unReadCount={this.props.unReadCount} navList={this.navList}/>: null}
       </div>
     )
   }
 }
 
 export default connect(
-  state => ({user: state.user}),
+  state => ({user: state.user, unReadCount: state.chat.unReadCount}),
   {getUser}
 )(Dashboard)
